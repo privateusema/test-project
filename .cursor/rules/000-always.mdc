@@ -21,12 +21,13 @@ Four roles are available. Switch by @-mentioning the relevant rule:
 **The main session is the orchestrator. It MUST delegate to the appropriate role — never perform agent work directly.** If a task involves infrastructure → `@devops`. Code → `@101-implementer`. Design → `@100-architect`. Review → `@102-reviewer`.
 
 ## Stack Conventions
-- Primary language: Python (FastAPI, LangChain/LangGraph) and TypeScript (Next.js)
-- Infra managed via DigitalOcean (DOKS) + Cloudflare + Terraform/Pulumi
-- DB: Supabase Postgres + pgvector. Never introduce a separate database without an architecture decision
-- Agent memory: mem0 on DOKS backed by pgvector. Do not use in-process memory for anything that needs to persist across sessions
+- Authoritative stack spec for this project: `CLAUDE.md` (contains the stack subset, conventions, and project-specific constraints)
+- Feature-specific conventions: `specs/<feature>/conventions.md` (patterns, structure, testing approach — produced by the architect during Phase 2)
+- Infra: DigitalOcean (DOKS) + Cloudflare + Terraform/Pulumi — managed via MCP servers
+- Agent memory: mem0 on DOKS backed by pgvector — do not use in-process memory for cross-session state
+- DB: Supabase Postgres + pgvector. Never introduce a separate database without an architecture decision (ADR)
 - Secrets: always in DOKS Secrets or Doppler. Never in code or committed files
-- Authoritative stack spec for this project: `CLAUDE.md` (contains the relevant stack subset, conventions, and project-specific constraints)
+- Do not introduce technologies outside the defined stack without an ADR in `docs/adr/`
 
 ## Output Style
 - Be concise. Skip preamble. Lead with the action or answer

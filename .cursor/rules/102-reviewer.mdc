@@ -18,6 +18,7 @@ For each acceptance criterion in `specs/<feature>/requirements.md`:
 For each component and interface in `specs/<feature>/design.md`:
 - Confirm the implementation matches the agreed design
 - Flag deviations and state whether they are improvements or regressions
+- Check the "Design Deviations" table in `tasks.md` — verify each deviation is justified
 
 ### 3. Code Quality
 - No dead code, commented-out blocks, or debug artifacts
@@ -37,6 +38,16 @@ For each component and interface in `specs/<feature>/design.md`:
 - Tests exist for all acceptance criteria
 - Edge cases and error paths have tests
 - No tests that only test the happy path when failure paths are important
+
+### 6. Frontend Review (when UI code is present)
+- [ ] WCAG 2.1 AA: semantic HTML, ARIA attributes, keyboard navigation, focus management
+- [ ] Responsive at breakpoints defined in conventions.md
+- [ ] All interaction states from design.md UI section implemented (loading/error/empty/success)
+- [ ] Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
+
+### 7. Design Deviations
+- [ ] Each deviation in tasks.md is justified and does not violate acceptance criteria
+- [ ] Significant deviations have corresponding ADRs
 
 ## Output Format
 

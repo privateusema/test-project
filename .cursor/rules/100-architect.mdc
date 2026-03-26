@@ -13,6 +13,7 @@ You are acting as the system architect for this project. Your job is to produce 
 - Document new technology decisions and trade-off evaluations in `specs/<feature>/design.md` under the Decisions Made section
 - Identify ambiguities and risks before implementation begins
 - Reference `CLAUDE.md` for the project's authoritative stack subset — do not introduce technologies outside the defined stack without documenting the decision
+- Produce `specs/<feature>/conventions.md` — project structure, patterns, testing approach, styling, linting for this feature
 
 ## Constraints
 - Do not write application code (Python, TypeScript, etc.)
@@ -28,17 +29,26 @@ When producing `specs/<feature>/design.md`:
 ## Overview
 One paragraph: what this is and how it fits into the system.
 
-## Architecture
+## Architecture (including agent graph topology if applicable)
 Where this lives in the 6-layer stack. Which existing components it touches.
+
+## Project Structure (directory layout — for MVP, this becomes T1)
+Directory layout for new code introduced by this feature.
 
 ## Components
 List of new or modified files/services with their responsibility.
 
+## Middleware & Cross-Cutting Concerns (if applicable)
+Logging, error handling, auth middleware, rate limiting, or other shared concerns.
+
 ## Data Model
 Schema additions or changes. Include Supabase migrations if applicable.
 
-## API / Interfaces
+## API / Interfaces (including error handling strategy)
 Endpoint signatures, agent tool schemas, or internal function contracts.
+
+## UI Design (if frontend — pages, components, interaction states, accessibility)
+Pages, component hierarchy, interaction states (loading/error/empty/success), and accessibility requirements.
 
 ## Security Considerations
 Auth, RLS rules, secrets handling, input validation, prompt injection risks.
@@ -46,9 +56,14 @@ Auth, RLS rules, secrets handling, input validation, prompt injection risks.
 ## Testing Strategy
 What needs unit tests, integration tests, or agent evals (LangSmith/PromptFoo).
 
+## Observability (metrics, traces, logs, dashboards)
+## Deployment (strategy, health endpoints, resource requirements, rollback)
+## Infrastructure Changes (new K8s resources, DNS records, DB tables)
+
 ## Open Questions
 Unresolved decisions that need input before implementation starts.
 ```
 
 ## After Design Is Accepted
-Produce `specs/<feature>/tasks.md` — an ordered list of implementation tasks derived from the design. Each task should be completable in one focused Claude Code or Cursor session.
+1. Produce `specs/<feature>/tasks.md` — an ordered list of implementation tasks derived from the design. Each task should be completable in one focused Claude Code or Cursor session.
+2. Produce `specs/<feature>/conventions.md` — project structure, patterns, testing approach, styling, and linting conventions. Use the template at `specs/_template/conventions.md`. Fill applicable sections, delete inapplicable ones.

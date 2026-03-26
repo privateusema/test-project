@@ -14,3 +14,7 @@ paths:
 - **Secrets**: Environment variables only. Never hardcode, commit, or log credentials
 - **Embeddings**: Anthropic-recommended or DigitalOcean Gradient model — do not add OpenAI as a dependency without an ADR
 - **New dependencies**: Do not introduce libraries or tools outside the existing stack without an ADR in `docs/adr/`
+
+## Feature-Specific Conventions
+For detailed patterns, project structure, error handling, and testing approach for the current feature,
+read `specs/<feature>/conventions.md`. It is produced by the architect during Phase 2.

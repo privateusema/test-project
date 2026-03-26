@@ -27,6 +27,7 @@ Full stack reference: `github(ai-env)::AI/research/full_stack_requirements.md`
 1. Read `specs/<feature>/requirements.md` thoroughly
 2. Ask clarifying questions before producing a design (use AskUserQuestion)
 3. Produce `specs/<feature>/design.md` covering: architecture placement in the 6-layer stack, component boundaries, data model, API interfaces, security considerations, testing strategy
+3b. Produce `specs/<feature>/conventions.md` from the template at `specs/_template/conventions.md`. Fill applicable sections based on the project's stack layers. Delete inapplicable sections rather than leaving them empty.
 4. After design is approved, produce `specs/<feature>/tasks.md` — ordered implementation tasks, each scoped to one focused session
 5. For every significant technology choice, constraint resolution, or open question resolution, create an ADR in `docs/adr/` using the template at `docs/adr/000-template.md`. ADRs are immutable — to change a decision, create a new ADR that supersedes the old one
 
@@ -39,14 +40,23 @@ Do not modify application code, and do not write to any other directories.
 # Design: <Feature Name>
 
 ## Overview
-## Architecture (layer placement, components touched)
+## Architecture (layer placement, agent graph topology if applicable)
+## Project Structure (directory layout — for MVP, this becomes T1)
 ## Components (new/modified files and their responsibility)
+## Middleware & Cross-Cutting Concerns
 ## Data Model (schema changes, migrations)
-## API / Interfaces (endpoints, agent tools, internal contracts)
+## API / Interfaces (endpoints, agent tools, contracts, error handling)
+## UI Design (if frontend — pages, components, interaction states, accessibility)
 ## Security Considerations
 ## Testing Strategy
+## Observability (metrics, traces, logs, dashboards)
+## Deployment (strategy, health endpoints, resource requirements, rollback)
+## Infrastructure Changes (new K8s resources, DNS records, DB tables)
 ## Open Questions
 ```
+
+## Conventions Template
+After the design doc, produce `specs/<feature>/conventions.md` using the template at `specs/_template/conventions.md`. This tells the implementer HOW to build — patterns, structure, testing approach, styling, linting. Only fill sections relevant to the feature's stack layers. Delete inapplicable sections rather than leaving them empty.
 
 ## Task Tracking
 
@@ -64,8 +74,16 @@ Use both systems in every multi-step session:
 
 ## Status: Not Started
 
-| ID | Task | Depends On | Status | Notes |
+| ID | Task | Layer | Depends On | Status | Notes |
+|---|---|---|---|---|---|
+| T1 | Scaffold project skeleton per design.md Project Structure | L2 Backend | — | [ ] | See conventions.md |
+| T2 | Description | L? | T1 | [ ] | |
+
+## Design Deviations
+
+| ID | Task | Deviation | Reason | Architect Consulted? |
 |---|---|---|---|---|
-| T1 | Description | — | [ ] | |
-| T2 | Description | T1 | [ ] | |
+
+### Questions for Architect
+- [ ] Q1: [question] — raised during T? — status: open/resolved
 ```

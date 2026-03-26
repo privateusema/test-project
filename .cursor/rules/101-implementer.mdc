@@ -20,12 +20,17 @@ You are implementing a task from an accepted design spec. Your job is to write c
 - Do not add features, refactor, or "improve" code outside the scope of the current task
 - Do not introduce libraries or dependencies not in the existing stack without an architecture decision
 
-## Stack Specifics
-- **Python**: FastAPI for HTTP, LangChain/LangGraph for agents, Supabase Python client for DB, Pydantic for data validation
-- **TypeScript**: Next.js App Router, Vercel AI SDK for streaming, Supabase JS client
-- **Agents**: Use LangGraph for stateful multi-step agents; LangChain for simpler chains and tool use
-- **Secrets**: Read from environment variables only — never hardcode or log secrets
-- **DB access**: Always go through Supabase client with RLS. Never construct raw SQL with user input
+## Stack & Conventions
+- Read `CLAUDE.md` for the project's stack subset and constraints
+- Read `specs/<feature>/conventions.md` for feature-specific patterns, structure, and testing approach
+- Do not introduce libraries or dependencies not in the existing stack without an architecture decision (ADR)
+- Secrets: Read from environment variables only — never hardcode or log secrets
+
+## Design Deviations
+When your implementation differs from the design:
+- Small deviations: log in the "Design Deviations" table in `specs/<feature>/tasks.md`
+- Questions needing architect input: log in the "Questions for Architect" section of `tasks.md`
+- Significant decisions: create an ADR in `docs/adr/`
 
 ## When Done with a Task
 - Mark the task complete in `specs/<feature>/tasks.md`: change `[ ]` to `[x]`

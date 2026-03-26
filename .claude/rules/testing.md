@@ -1,6 +1,7 @@
 ---
 paths:
   - "src/**"
+  - "app/**"
   - "tests/**"
 ---
 
@@ -20,6 +21,12 @@ paths:
 ## RAG Pipelines
 - Test contextual precision and recall with defined thresholds
 - Hybrid search (keyword + semantic) must be tested independently and combined
+
+## Frontend Code (components, pages, hooks)
+- Component tests with Testing Library (or equivalent from conventions.md)
+- E2E tests for critical user flows with Playwright (or equivalent from conventions.md)
+- Accessibility testing: automated axe-core checks in component tests
+- Visual regression: optional, per conventions.md
 
 ## Before Marking a Task Complete
 1. Run the full test suite: `pytest`

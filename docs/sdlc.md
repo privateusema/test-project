@@ -75,8 +75,8 @@ The gate blocks Phase 2. The architect must not produce a design until requireme
 With accepted requirements, the architect produces `specs/<feature>/design.md`. The design covers architecture placement in the 6-layer stack, component boundaries, the data model, API interfaces, security considerations, a testing strategy, and observability/deployment notes. After design approval, the architect produces `specs/<feature>/tasks.md` — an ordered, dependency-tracked implementation task list scoped to one focused session per task.
 
 **Artifacts consumed:** `specs/<feature>/requirements.md` (Accepted)
-**Artifacts produced:** `specs/<feature>/design.md`, `specs/<feature>/tasks.md`
-**Quality gate:** Design doc covers all required sections. Task list is complete, ordered, and dependency-correct. Human sets `design.md` Status: Accepted.
+**Artifacts produced:** `specs/<feature>/design.md`, `specs/<feature>/conventions.md`, `specs/<feature>/tasks.md`
+**Quality gate:** Design doc covers all required sections. Task list is complete, ordered, and dependency-correct. Conventions doc covers applicable backend and/or frontend sections. Human sets `design.md` Status: Accepted.
 
 The gate blocks Phase 3. The implementer must not write application code until the design is accepted.
 
@@ -86,7 +86,7 @@ The gate blocks Phase 3. The implementer must not write application code until t
 
 The implementer works through `tasks.md` one task at a time. Each task is implemented with its tests before moving on. The implementer marks tasks complete in `tasks.md` (`[ ]` → `[x]`) after each one, not in a batch at the end. The built-in Tasks system is used for within-session progress signaling to the orchestrator.
 
-**Artifacts consumed:** `specs/<feature>/design.md`, `specs/<feature>/tasks.md`
+**Artifacts consumed:** `specs/<feature>/design.md`, `specs/<feature>/conventions.md`, `specs/<feature>/tasks.md`
 **Artifacts produced:** Application code, tests, any infrastructure additions declared in the design
 **Quality gate:** All tasks in `tasks.md` are checked (`[x]`). `pytest` / `npm test` passes locally. `ruff` / `eslint` / `tsc` lint is clean. CI pipeline is green on the feature branch.
 
@@ -100,7 +100,7 @@ The reviewer agent runs a structured audit against the spec. It confirms each AC
 
 For changes touching auth flows, RLS policies, LLM input handling, or secrets management, a human must also review and approve those paths before the gate passes.
 
-**Artifacts consumed:** All code on the feature branch, `specs/<feature>/requirements.md`, `specs/<feature>/design.md`
+**Artifacts consumed:** All code on the feature branch, `specs/<feature>/requirements.md`, `specs/<feature>/design.md`, `specs/<feature>/tasks.md` (including Design Deviations table)
 **Artifacts produced:** Review report (in-session output or written to `specs/<feature>/review-<N>.md`)
 **Quality gate:** No HIGH findings in the reviewer report. SAST scan clean. Every AC verified with `file:line` evidence. Human approval obtained for security-critical paths.
 
@@ -254,6 +254,20 @@ claude --agent devops -n <feature>-deploy
 
 Requirements or design changes after acceptance are common. The process ensures in-flight implementation is not disrupted by unreviewed spec changes.
 
+**Lightweight deviations (no spec branch needed):**
+
+Not every implementation difference requires the full spec evolution process. The implementer logs small deviations in the "Design Deviations" table in `tasks.md`. These are reviewed during Phase 4. This covers:
+- Renamed fields or functions for clarity
+- Changed return types for practical reasons
+- Reordered implementation steps
+- Minor API shape adjustments that don't affect other components
+
+The full spec evolution process (branch, PR, human review) is required when:
+- Acceptance criteria need to change
+- API interfaces that downstream tasks depend on need to change
+- The data model changes after migrations have been applied
+- A new technology or dependency is introduced
+
 **When a spec change is needed:**
 
 1. Create a branch: `spec/<feature>-rev<N>`
@@ -292,6 +306,9 @@ A feature is complete when all of the following are true:
 - [ ] Feature branch squash-merged to `main` with human approval
 - [ ] Deployed to production namespace and stable for 10 minutes (health checks, error rate, LangSmith traces, Cloudflare AI Gateway metrics)
 - [ ] ADRs created in `specs/<feature>/` for any significant architectural decisions made during this feature that deviate from or extend the design doc
+- [ ] Frontend accessibility: WCAG 2.1 AA verified (if feature has UI)
+- [ ] All interaction states implemented: loading, error, empty, success (if feature has UI)
+- [ ] Design deviations in `tasks.md` reviewed and accepted by reviewer
 
 A feature is **not** done when:
 - Tests pass locally but CI is red

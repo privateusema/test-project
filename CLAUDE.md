@@ -83,6 +83,8 @@ Project-specific constraints for AI agents working in this repo:
 - Cache: DigitalOcean Managed Valkey (Redis-compatible)
 - Secrets: DOKS Secrets or Doppler — never in code or committed files
 
+Feature-specific conventions (patterns, structure, testing approach) are documented per-feature in `specs/<feature>/conventions.md`, produced by the architect during Phase 2. Template: `specs/_template/conventions.md`.
+
 ---
 
 ## Platform Infrastructure, Credentials, and Deployment

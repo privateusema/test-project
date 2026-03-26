@@ -29,6 +29,7 @@ For each acceptance criterion in requirements.md: confirm it is implemented, par
 
 ### 3. Design Conformance
 For each component/interface in design.md: confirm the implementation matches. Flag deviations.
+- Check the "Design Deviations" table in `tasks.md` — verify each logged deviation is justified and does not violate acceptance criteria
 
 ### 4. Code Quality
 - No dead code, debug artifacts, or commented-out blocks
@@ -72,6 +73,20 @@ For each component/interface in design.md: confirm the implementation matches. F
 - No hardcoded secrets in manifests
 - Image tags are immutable (SHA or semver, not `latest`)
 - Prometheus scrape annotations present
+
+### 10. Frontend Review (when reviewing UI code)
+- [ ] Accessibility: WCAG 2.1 AA — semantic HTML, ARIA attributes, keyboard navigation, focus management
+- [ ] Responsive: layouts verified at breakpoints defined in conventions.md
+- [ ] Performance: prefer server components, optimize images, lazy load where appropriate
+- [ ] Core Web Vitals: LCP < 2.5s, INP < 200ms, CLS < 0.1
+- [ ] Interaction states: all states from design.md UI section implemented (loading/error/empty/success)
+- [ ] Visual consistency: follows component patterns and styling from conventions.md
+- [ ] No layout shift from dynamically loaded content
+
+### 11. Design Deviations
+- [ ] Each deviation in the "Design Deviations" table in tasks.md is justified
+- [ ] No deviation violates an acceptance criterion
+- [ ] Significant deviations have corresponding ADRs in docs/adr/
 
 ## Output Format
 

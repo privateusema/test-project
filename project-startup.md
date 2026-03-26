@@ -87,6 +87,8 @@ Once requirements are accepted, the next session activates `@agent-architect` (o
 1. `specs/mvp/design.md` — architecture, components, data model, APIs, security, testing strategy
 2. `specs/mvp/tasks.md` — ordered implementation tasks, each scoped to one focused session
 
+The architect also produces `specs/mvp/conventions.md` during Phase 2 — this tells the implementer HOW to build (patterns, structure, testing approach, styling, linting) while the design doc says WHAT to build. Template: `specs/_template/conventions.md`.
+
 No code is written until the design is accepted.
 
 ---

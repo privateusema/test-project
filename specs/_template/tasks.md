@@ -16,7 +16,7 @@ Update status as work progresses:
 
 | ID | Task | Phase | Agent | Depends On | Status | Notes |
 |---|---|---|---|---|---|---|
-| T1 | [e.g. Create Supabase migration for new table] | Implement | implementer | — | [ ] | |
+| T1 | Scaffold project skeleton per design.md Project Structure section | Implement | implementer | — | [ ] | Creates all directories and empty files; no logic yet |
 | T2 | [e.g. Implement FastAPI endpoint] | Implement | implementer | T1 | [ ] | |
 | T3 | [e.g. Write unit tests for endpoint] | Implement | implementer | T2 | [ ] | |
 | T4 | [e.g. Add Supabase RLS policy] | Implement | implementer | T1 | [ ] | |
@@ -37,3 +37,21 @@ Brief notes on what was done each session (not a git log — capture decisions a
 | Date | Tasks | Notes |
 |---|---|---|
 | YYYY-MM-DD | T1 | [any deviation from design, decision made] |
+
+---
+
+## Design Deviations
+
+Record implementation decisions that differ from `design.md`. Small deviations go here.
+For significant architectural changes, create an ADR in `docs/adr/`.
+
+| ID | Task | Deviation | Reason | Architect Consulted? |
+|---|---|---|---|---|
+| V1 | T? | [what changed vs. design] | [why] | Yes/No/Pending |
+
+### Questions for Architect
+
+Unresolved questions that may need architect input. The orchestrator decides whether
+to invoke the architect.
+
+- [ ] Q1: [question] — raised during T? — status: open/resolved
