@@ -17,7 +17,7 @@ jobs:
     outputs:
       image_tag: ${{ github.sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -38,7 +38,7 @@ jobs:
     needs: build-push
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
