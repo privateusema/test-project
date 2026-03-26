@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-project
+  namespace: test-project
+  labels:
+    app: test-project
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: test-project
+  template:
+    metadata:
+      labels:
+        app: test-project
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: test-project
+          image: registry.digitalocean.com/xchains-registry/test-project:<IMAGE_TAG>
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: test-project-secrets
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            periodSeconds: 15
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            periodSeconds: 10
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: xchains-registry

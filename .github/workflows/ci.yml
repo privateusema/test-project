@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.13"
+  NODE_VERSION: "22"
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install ruff
+      - run: ruff check src/ tests/
+      - run: ruff format --check src/ tests/
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - run: pip install pytest pytest-cov
+      - run: pytest tests/unit/ tests/integration/ --cov=src --cov-report=xml -m "not eval and not slow"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Semgrep SAST
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: auto
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build -t ${{ github.event.repository.name }}:${{ github.sha }} .
+
+  scan:
+    name: Image Scan
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image for scanning
+        run: docker build -t ${{ github.event.repository.name }}:${{ github.sha }} .
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ github.event.repository.name }}:${{ github.sha }}
+          format: table
+          exit-code: 1
+          severity: CRITICAL,HIGH
+
+  llm-evals:
+    name: LLM Evaluations
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' &&
+      contains(join(github.event.pull_request.changed_files.*.filename, ','), 'src/agents/') ||
+      contains(join(github.event.pull_request.changed_files.*.filename, ','), 'src/rag/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - run: pip install deepeval
+      - name: Run LLM evaluations
+        run: pytest tests/evals/ -m eval --tb=short
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+          LANGCHAIN_TRACING_V2: "true"

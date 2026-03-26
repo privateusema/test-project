@@ -1,0 +1,61 @@
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ── Claude Code ───────────────────────────────────────────────────────────────
+# Committed: .claude/settings.json, .claude/agents/, .claude/rules/, .claude/agent-memory/
+# Ignored: local overrides, session logs, local-only agent memory
+.claude/settings.local.json
+.claude/session-changes.log
+.claude/agent-memory-local/
+
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.coverage
+htmlcov/
+
+# ── Terraform ────────────────────────────────────────────────────────────────
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+*.log
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo

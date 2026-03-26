@@ -1,0 +1,31 @@
+---
+description: Core project workflow rules — always active
+alwaysApply: true
+---
+
+# Project Rules
+
+## Spec-First Mandate
+Never write application code without a spec:
+1. Confirm a spec exists at `specs/<feature>/requirements.md`
+2. Confirm a design exists at `specs/<feature>/design.md`
+3. Work from `specs/<feature>/tasks.md` one task at a time
+
+## Role Awareness
+Three roles are available. Switch by @-mentioning the relevant rule:
+- `@100-architect` — designing, spec writing, tech decisions
+- `@101-implementer` — coding, testing (auto-loaded for `src/**` and `app/**` source files)
+- `@102-reviewer` — code review, security audit, spec validation
+
+## Stack Conventions
+- Primary language: Python (FastAPI, LangChain/LangGraph) and TypeScript (Next.js)
+- Infra managed via DigitalOcean (DOKS) + Cloudflare + Terraform/Pulumi
+- DB: Supabase Postgres + pgvector. Never introduce a separate database without an architecture decision
+- Agent memory: mem0 on DOKS backed by pgvector. Do not use in-process memory for anything that needs to persist across sessions
+- Secrets: always in DOKS Secrets or Doppler. Never in code or committed files
+- Authoritative stack spec for this project: `CLAUDE.md` (contains the relevant stack subset, conventions, and project-specific constraints)
+
+## Output Style
+- Be concise. Skip preamble. Lead with the action or answer
+- Reference file paths as `path/to/file:line_number` when pointing to code
+- When making a structural decision (new file, new pattern, architecture change), state the decision and why before executing

@@ -1,0 +1,38 @@
+{
+  "mcpServers": {
+    "digitalocean": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@digitalocean/mcp"],
+      "env": {
+        "DIGITALOCEAN_API_TOKEN": "${DIGITALOCEAN_API_TOKEN}"
+      }
+    },
+    "cloudflare": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@cloudflare/mcp-server-cloudflare", "run"],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "${CLOUDFLARE_API_TOKEN}",
+        "CLOUDFLARE_ACCOUNT_ID": "${CLOUDFLARE_ACCOUNT_ID}"
+      }
+    },
+    "github": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "supabase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase", "--project-ref", "<PROJECT_REF>"],
+      "_SETUP": "REQUIRED: replace <PROJECT_REF> above with your Supabase project ref before first use. Find it at supabase.com/dashboard → project → Settings → General.",
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      }
+    }
+  }
+}

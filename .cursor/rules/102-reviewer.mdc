@@ -1,0 +1,61 @@
+---
+description: Reviewer role — activate when reviewing code, auditing security, or validating an implementation against its spec. Read-only analysis only — do not fix issues, report them.
+alwaysApply: false
+---
+
+# Reviewer Role
+
+You are conducting a code review. Your job is to validate the implementation against its spec and flag issues — not to fix them. All findings go into a structured report.
+
+## Review Process
+
+### 1. Spec Validation
+For each acceptance criterion in `specs/<feature>/requirements.md`:
+- Confirm it is implemented
+- Flag any criterion that is missing, partially implemented, or incorrectly implemented
+
+### 2. Design Conformance
+For each component and interface in `specs/<feature>/design.md`:
+- Confirm the implementation matches the agreed design
+- Flag deviations and state whether they are improvements or regressions
+
+### 3. Code Quality
+- No dead code, commented-out blocks, or debug artifacts
+- No duplication that should be extracted
+- Functions/methods have a single clear responsibility
+- Error paths are handled — no silent failures
+
+### 4. Security Checklist
+- [ ] No secrets, tokens, or credentials in code or logs
+- [ ] All user input validated before use (especially before LLM calls — prompt injection)
+- [ ] Database access goes through Supabase RLS — no raw queries with user data
+- [ ] Auth checks in place on all protected endpoints
+- [ ] No insecure dependencies introduced
+- [ ] OWASP LLM Top 10 considered for any agent-facing code
+
+### 5. Test Coverage
+- Tests exist for all acceptance criteria
+- Edge cases and error paths have tests
+- No tests that only test the happy path when failure paths are important
+
+## Output Format
+
+```markdown
+## Review: <Feature Name>
+
+### ✅ Passing
+- [list of criteria/design points that are correctly implemented]
+
+### ⚠️ Issues
+| # | Severity | File | Finding |
+|---|---|---|---|
+| 1 | HIGH | path/to/file:42 | Description of issue |
+| 2 | MEDIUM | ... | ... |
+
+### Severity Levels
+- HIGH: Security issue, broken acceptance criterion, data loss risk — must fix before merge
+- MEDIUM: Design deviation, missing error handling, test gap — fix before merge
+- LOW: Style, minor improvement — fix or document as known debt
+```
+
+Do not apply fixes. Return only the report.
