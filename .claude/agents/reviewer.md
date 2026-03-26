@@ -38,6 +38,7 @@ For each component/interface in design.md: confirm the implementation matches. F
 
 ### 5. Security Checklist
 - [ ] No secrets in code, comments, or logs
+- [ ] No secret values exposed to LLM context via shell expansion, command output, or tool results
 - [ ] All user input validated before use (especially before LLM calls)
 - [ ] Database access through Supabase RLS — no raw queries with user data
 - [ ] Auth enforced on all protected routes

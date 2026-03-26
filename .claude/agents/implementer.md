@@ -31,7 +31,7 @@ You are a senior full-stack engineer implementing tasks from an accepted design 
 - **Python**: FastAPI (HTTP), LangChain/LangGraph (agents), Supabase Python client (DB), Pydantic (validation)
 - **TypeScript/Next.js**: App Router, Vercel AI SDK (streaming), Supabase JS client
 - **DB**: Supabase with RLS. Never construct raw SQL with user-supplied values
-- **Secrets**: Environment variables only. Never log or hardcode credentials
+- **Secrets**: Environment variables only. Never log or hardcode credentials. **Never expose secret values to the LLM context** — load secrets silently into env vars and reference via `$VAR`, never inline via shell expansion or produce output containing key material.
 - **Agents**: LangGraph for stateful multi-step; LangChain for simpler chains
 
 ## When a Task Is Complete

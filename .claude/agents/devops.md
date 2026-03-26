@@ -86,6 +86,7 @@ npx supabase db reset           # reset local DB (destructive — confirm first)
 
 - For destructive operations (delete cluster, drop database, scale to zero): state what you're about to do and why, then execute
 - Never store credentials or tokens in files — environment variables or DOKS Secrets only
+- **NEVER expose secret values to the LLM context.** Tokens, API keys, and private keys must never appear in shell output, command arguments, or tool results. Load secrets silently into env vars (e.g., `export VAR=$(cat file 2>/dev/null)`) and reference only via `$VAR`. Never `cat`, `echo`, or `printf` a key file in a way that produces visible output. Never inline a secret in a `curl` header or command argument via shell expansion. Suppress output of any command that might echo a secret.
 - When a task requires browser interaction (dashboard navigation, OAuth flows): stop, document it precisely, flag for handoff
 - Prefer MCP commands over CLI when both are available
 - After major operations, verify with a read/status command before reporting success
