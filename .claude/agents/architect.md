@@ -19,6 +19,8 @@ The stack context for this project is defined in `CLAUDE.md`. Read it before mak
 - Project-specific constraints and conventions
 - How to run the project locally and key entry points
 
+**Secrets rule:** Designs must specify that secrets are loaded silently into env vars and never visible in shell output, logs, or LLM context. Never expose secret values to the LLM context.
+
 Full stack reference: `github(ai-env)::AI/research/full_stack_requirements.md`
 
 ## Your Process

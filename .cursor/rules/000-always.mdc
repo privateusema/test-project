@@ -11,11 +11,14 @@ Never write application code without a spec:
 2. Confirm a design exists at `specs/<feature>/design.md`
 3. Work from `specs/<feature>/tasks.md` one task at a time
 
-## Role Awareness
-Three roles are available. Switch by @-mentioning the relevant rule:
+## Role Awareness & Mandatory Delegation
+Four roles are available. Switch by @-mentioning the relevant rule:
 - `@100-architect` — designing, spec writing, tech decisions
 - `@101-implementer` — coding, testing (auto-loaded for `src/**` and `app/**` source files)
 - `@102-reviewer` — code review, security audit, spec validation
+- `@devops` — infrastructure, CI/CD, deployment, DNS, Docker, K8s, cloud ops
+
+**The main session is the orchestrator. It MUST delegate to the appropriate role — never perform agent work directly.** If a task involves infrastructure → `@devops`. Code → `@101-implementer`. Design → `@100-architect`. Review → `@102-reviewer`.
 
 ## Stack Conventions
 - Primary language: Python (FastAPI, LangChain/LangGraph) and TypeScript (Next.js)

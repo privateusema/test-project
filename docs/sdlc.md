@@ -18,7 +18,26 @@ Four agents operate across the lifecycle:
 | `@reviewer` | Spec validation and audit | `plan` (read-only) |
 | `@devops` | Infrastructure, CI/CD, deployments | `acceptEdits` |
 
-The main Claude Code session acts as orchestrator — it delegates to agents, runs them in parallel where tasks are independent (using worktrees), and monitors progress via the built-in Tasks system.
+The main Claude Code session is the **orchestrator**. It MUST NOT perform work that belongs to an agent's domain. It delegates, monitors, coordinates, and communicates with the user — it does not build, deploy, design, review, or write application code.
+
+### Delegation Rules
+
+**Delegation is mandatory.** When a task matches an agent's domain, the orchestrator MUST delegate to that agent — no exceptions, even for "quick" or "simple" tasks.
+
+| Task type | Delegate to | Examples |
+|---|---|---|
+| Design, specs, architecture decisions | `@architect` | Write requirements, produce design.md, evaluate tech choices |
+| Application code, tests, bug fixes | `@implementer` | Implement a feature, write tests, fix a bug |
+| Code review, spec validation, security audit | `@reviewer` | Review a PR, validate acceptance criteria, audit security |
+| Infrastructure, CI/CD, deployment, DNS, Docker, K8s, cloud ops | `@devops` | Build/push images, apply K8s manifests, configure Cloudflare, set up CI |
+
+**The orchestrator may only perform directly:**
+- Requirements conversations with the user (Phase 1)
+- Coordinating and sequencing agent work
+- Communicating results and status to the user
+- Trivial file reads or searches to decide which agent to invoke
+
+If the orchestrator catches itself running `kubectl`, `docker`, `terraform`, `curl` against cloud APIs, writing application code, or producing design documents — it has violated delegation and must stop and hand off to the correct agent.
 
 ---
 

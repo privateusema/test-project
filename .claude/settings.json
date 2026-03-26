@@ -52,6 +52,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"\nimport sys, json, re\nd = json.load(sys.stdin)\ncmd = d.get('tool_input', {}).get('command', '')\n# Strip heredoc content (<<EOF...EOF, <<'EOF'...EOF) to avoid false positives on docs\ncleaned = re.sub(r\\\"<<'?\\\\w+'?.*?\\\\n.*?\\\\nEOF\\\", '', cmd, flags=re.DOTALL)\n# Strip single-quoted strings (safe literal text)\ncleaned = re.sub(r\\\"'[^']*'\\\", '', cleaned)\nSECRET_PATS = r'(\\\\.pem|\\\\.key|\\\\.prv|\\\\.pub|\\\\.p12|\\\\.pfx|\\\\.crt|\\\\.cer|id_rsa|id_ed25519|id_ecdsa|_rsa|_ed25519|_ed5|_ecdsa|~/keys/)'\nREAD_CMDS = r'(cat|head|tail|less|more)\\\\s+\\\\S*' + SECRET_PATS\nECHO_CMDS = r'(echo|printf)\\\\s+.*' + SECRET_PATS\nif re.search(READ_CMDS, cleaned, re.I) or re.search(ECHO_CMDS, cleaned, re.I):\n    print('BLOCKED: Command would expose secret/key material to LLM context. Load into env var silently instead: export VAR=\\$(cat file 2>/dev/null)', file=sys.stderr)\n    sys.exit(2)\nINLINE_EXP = r'\\\\\\$\\\\(cat\\\\s+\\\\S*' + SECRET_PATS + r'.*?\\\\)'\nif re.search(INLINE_EXP, cleaned, re.I) and not re.match(r'^\\\\s*export\\\\s', cleaned):\n    print('BLOCKED: Shell expansion of secret file without export. Use: export VAR=\\$(cat file 2>/dev/null) then reference \\$VAR', file=sys.stderr)\n    sys.exit(2)\n\"",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "PostToolUse": [
