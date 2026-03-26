@@ -34,7 +34,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: pip install pytest pytest-cov
       - run: pytest tests/unit/ tests/integration/ --cov=src --cov-report=xml -m "not eval and not slow"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: coverage-report
           path: coverage.xml
